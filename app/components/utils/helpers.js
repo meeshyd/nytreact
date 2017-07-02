@@ -1,39 +1,50 @@
 // Include the axios package for performing HTTP requests (promise based alternative to request)
-var axios = require("axios");
+var axios = require('axios');
 
-// Geocoder API
-var geocodeAPI = "35e5548c618555b1a43eb4759d26b260";
+// New York Times API
+var nytAPI = "39869921ec514004b10b70efa84c6fca";
 
-// Helper functions for making API Calls
-var helper = {
+// Helper Functions
+var helpers = {
 
-  // This function serves our purpose of running the query to geolocate.
-  runQuery: function(location) {
+  runQuery: function(term, startYear, endYear){
 
-    console.log(location);
+    //Figure out the geolocation
+    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q=" + term + "&begin_date=" + startYear + "0101&end_date=" + endYear + "1231";
 
-    // Figure out the geolocation
-    var queryURL = "http://api.opencagedata.com/geocode/v1/json?query=" + location + "&pretty=1&key=" + geocodeAPI;
-    return axios.get(queryURL).then(function(response) {
-      // If get get a result, return that result's formatted address property
-      if (response.data.results[0]) {
-        return response.data.results[0].formatted;
+    return axios.get(queryURL).then(function(response){
+
+      var allArticles = response.response.docs;
+      var newArticles = [];
+      var counter = 0;
+      console.log(allArticles)
+      //Gets first 5 articles that have all 3 components
+      for(var i = 0; i < allArticles.length; i++){
+
+        if(counter > 4) {
+          return newArticles;
+        }
+
+        if(allArticles[counter].headline.main && allArticles[counter].pub_date && allArticles[counter].web_url) {
+          newArticles.push(allArticles[counter]);
+          counter++;
+        }
       }
-      // If we don't get any results, return an empty string
-      return "";
-    });
+      console.log(newArticles)
+      return newArticles;
+    })
   },
 
-  // This function hits our own server to retrieve the record of query results
-  getHistory: function() {
-    return axios.get("/api");
-  },
+  // This function posts saved articles to our database.
+  postArticle: function(title, date, url){
 
-  // This function posts new searches to our database.
-  postHistory: function(location) {
-    return axios.post("/api", { location: location });
+    axios.post('/api/saved', {title: title, date: date, url: url})
+    .then(function(results){
+      return(results);
+    })
   }
-};
+}
 
-// We export the API helper
-module.exports = helper;
+
+// We export the helpers function (which contains getGithubInfo)
+module.exports = helpers;

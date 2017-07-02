@@ -1,18 +1,23 @@
 // Include React
 var React = require("react");
+var helpers = require('../utils/helpers.js');
 
 // Creating the Results component
 var Results = React.createClass({
-  // Here we render the function
+  
   render: function() {
     return (
-      <div className="panel panel-warning">
-        <div className="panel-heading">
-          <h3 className="panel-title text-center"><strong>Results</strong></h3>
-        </div>
-        <div className="panel-body">
-          RESULTS DISPLAY HERE
-        </div>
+      <div>
+        {this.props.results.map(function(search, i){
+          return(
+            <div id= "resultDiv" key={i}>
+              <h3>{search.headline}</h3>
+              <p>{search.blurb}</p>
+              <a href={search.url}><button type="button" className="btn btn-success">View on New York Times</button></a>
+              <button type="button" className="btn btn-info" onClick={helpers.postArticle(search.headline, search.url)}>Save Article</button>
+            </div>
+          );
+        })}
       </div>
     );
   }

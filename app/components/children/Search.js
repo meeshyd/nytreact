@@ -4,58 +4,65 @@ var React = require("react");
 // Creating the Form component
 var Search = React.createClass({
 
-  // // Here we set a generic state associated with the text being searched for
-  // getInitialState: function() {
-  //   return { term: "" };
-  // },
+  getInitialState: function(){
+    return{
+      'term': "",
+      'startYear': "",
+      'endYear': "",
+      'articles':[]
+    }
+  },
 
-  // // This function will respond to the user input
-  // handleChange: function(event) {
+  handleSubmit: function(){
+    // Prevent default form submission
+    // event.preventDefault();
 
-  //   this.setState({ term: event.target.value });
+    // Create object to hold search data
+    var newSearch = {};
+    newSearch.term = this.state.term;
+    newSearch.startYear = this.state.startYear;
+    newSearch.endYear = this.state.endYear;
 
-  // },
+    // Call setSearch prop (leads to parent function)
+    this.props.setSearch(newSearch);
+    console.log(newSearch)
+  },
 
-  // // When a user submits...
-  // handleSubmit: function(event) {
-  //   // prevent the HTML from trying to submit a form if the user hits "Enter" instead of
-  //   // clicking the button
-  //   event.preventDefault();
+  handleTermChange: function(event){
+    this.setState({ term: event.target.value });
+  },
 
-  //   // Set the parent to have the search term
-  //   this.props.setTerm(this.state.term);
-  //   this.setState({ term: "" });
-  // },
-  // Here we describe this component's render method
-  render: function() {
-    return (
-      <div className="panel panel-primary">
-        <div className="panel-heading">
-          <h2 className="panel-title text-center"><strong>Search</strong></h2>
-        </div>
-        <div className="panel-body text-center">
+  handleStYrChange: function(event){
+    this.setState({ startYear: event.target.value });
+  },
 
-            <form>
-              <div className="form-group">
-                <h4 className=""><strong>Topic</strong></h4>
-                <input type="text" className="form-control text-center" id="topic" required/>
-                <br />
+  handleEndYrChange: function(event){
+    this.setState({ endYear: event.target.value });
+  },
+  
 
-                <h4 className=""><strong>Start Year</strong></h4>
-                <input type="text" className="form-control text-center" id="startYear" required/>
-                <br />
-
-                <h4 className=""><strong>End Year</strong></h4>
-                <input type="text" className="form-control text-center" id="endYear" required/>
-                <br />
+  render: function(){
+    return(
+      
+      <form>
+          <div className="form-group text-left">
+            <label>Search Term: </label>
+            <input type="text" value={this.state.term} className="form-control" onChange={this.handleTermChange} required />
+          </div>
+          <div className="form-group text-left">
+            <label>Start Year: </label>
+            <input type="text" value={this.state.startYear} className="form-control" onChange={this.handleStYrChange} required />
+          </div>
+          <div className="form-group text-left">
+            <label>End Year: </label>
+            <input type="text" value={this.state.endYear} className="form-control" onChange={this.handleEndYrChange} required />
+          </div>
+          <button onClick={this.handleSubmit}>
+            Search
+          </button>
+      </form>
                 
-                <button type="button" className="btn btn-primary" >Search</button>
-              </div>
-
-            </form>
-        </div>
-      </div>
-    );
+    )
   }
 });
 
