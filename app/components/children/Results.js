@@ -4,21 +4,40 @@ var helpers = require('../utils/helpers.js');
 
 // Creating the Results component
 var Results = React.createClass({
-  
-  render: function() {
+
+  render: function(){
+    // "arts" is an object containing the search term results (i.e. articles)
+    var articleResult = this.props.results;
+    var saveFunction = this.saveStory;
+
+    // Iterate through the object containing the search results and prepare for display
+    var articleList = Object.keys(articleResult).map(function(i){
+      return (
+        
+        <div key={articleResult[i].title}>
+          <a href={articleResult[i].url}>
+            {articleResult[i].title}
+          </a>
+          <br/>
+          <button onClick={saveFunction} id={articleResult[i]._id} data-title={articleResult[i].title} data-url={articleResult[i].url} data-date={articleResult[i].date} type="button" className="btn btn-muted pull-right">Save
+          </button>
+          <br/>
+          Date: {articleResult[i].date}
+          <br/>
+        </div>
+
+      ) 
+    
+    }); 
+
     return (
-      <div>
-        {this.props.results.map(function(search, i){
-          return(
-            <div id= "resultDiv" key={i}>
-              <h3>{search.headline}</h3>
-              <p>{search.blurb}</p>
-              <a href={search.url}><button type="button" className="btn btn-success">View on New York Times</button></a>
-              <button type="button" className="btn btn-info" onClick={helpers.postArticle(search.headline, search.url)}>Save Article</button>
-            </div>
-          );
-        })}
+
+      <div className="panel-body">
+
+        {articleList}
+
       </div>
+
     );
   }
 });

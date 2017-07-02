@@ -5,27 +5,34 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
 
   var helpers = {
 
-    runQuery: function(params) {
-      var term = params.term;
-      var startYear = params.startYear;
-      var endYear = params.endYear;
-      var APIKey = '39869921ec514004b10b70efa84c6fca';
+    runQuery: function(search) {
+      var term = search.term;
+      var startYear = search.startYear;
+      var endYear = search.endYear;
 
       var queryURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKey + '&q=' + term + '&begin_date=' + startYear + '0101' + '&end_date=' + endYear + '1231';
-      console.log("runquery url ", queryURL)
-      return axios.get(queryURL).then(function(articles){
-        console.log("runquery articles ", articles.data.response.docs)
-        if(articles.data.response.docs[0]){
+      console.log("runQuery url ", queryURL)
+      var articles =[];
+      return axios.get(queryURL).then(function(res){
+        console.log("runQuery articles ", res.data.response.docs)
+        for (var i=0; i < res.data.response.docs.length; i++) {
+
+          articles.push({
+
+            title: res.data.response.docs[i].headline.main,
+            url: res.data.response.docs[i].web_url,
+            date: res.data.response.docs[i].pub_date,
+            _id: res.data.response.docs[i]._id
           
-          return (articles.data.response.docs);
+          });
         }
 
-        return [];
+        return articles;
       });
     },
 
     saveArticle: function(article) {
-        return axios.post("/api/saved", {article})
+        return axios.post("/api/saved", article)
     },
 
     getSaved: function() {

@@ -56,14 +56,18 @@ var Main = React.createClass({
   },
 
   // If the component updates we'll run this code
-  componentDidUpdate: function(){
+  componentDidUpdate: function(prevProps, prevState){
 
-    if(this.state.runSearch === true){
+    if (prevState.searchTerm !== this.state.term) {
 
-      helpers.runQuery(this.state.searchCriteria).then(function(articles){
-        this.setState({ articles: articles, runSearch: false });
+      let startYear = "";
+      let endYear = "";
+
+      helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear).then(function(data) {
+
+        this.setState({ results: data });
+
       }.bind(this));
-      console.log("componentdidmount ", this.state.searchCriteria)
     }
   },
 
@@ -76,10 +80,24 @@ var Main = React.createClass({
       }.bind(this));
   },
 
-  setTerm: function(results){
-    this.setState({ searchCriteria: results });
-    this.setState({ runSearch: true });
-    console.log("set term ", results)
+  // setTerm: function(results){
+  //   this.setState({ searchCriteria: results });
+  //   this.setState({ runSearch: true });
+  //   console.log("set term ", results)
+  // },
+
+  setTerm: function(term) {
+    this.setState({ term: term });
+  },
+
+  // Function to set search start date
+  setStartYr: function(startYear) {
+    this.setState({ startYear: startYear });
+  },
+
+  // Function to set search end date
+  setEndYr: function(endYear) {
+    this.setState({ endYear: endYear });
   },
 
   render: function() {
@@ -97,7 +115,7 @@ var Main = React.createClass({
                   <h3 className="panel-title text-center">Search</h3>
                 </div>
                 <div className= "panel-body text-center">
-                  <Search setTerm={this.setTerm} articles={this.state.results} saveArticle={this.saveArticle}/>
+                  <Search setTerm={this.setTerm} setStart={this.setStartYr} setEnd={this.setEndYr} />
                 </div>
               </div>
             </div>

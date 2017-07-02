@@ -9,8 +9,8 @@ var Search = React.createClass({
     return{
       'term': "",
       'startYear': "",
-      'endYear': "",
-      'articles':[]
+      'endYear': ""
+      // 'articles':[]
     }
   },
 
