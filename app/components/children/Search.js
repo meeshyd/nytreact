@@ -1,5 +1,6 @@
 // Include React
 var React = require("react");
+var helpers = require("../utils/helpers");
 
 // Creating the Form component
 var Search = React.createClass({
@@ -13,21 +14,6 @@ var Search = React.createClass({
     }
   },
 
-  handleSubmit: function(){
-    // Prevent default form submission
-    // event.preventDefault();
-
-    // Create object to hold search data
-    var newSearch = {};
-    newSearch.term = this.state.term;
-    newSearch.startYear = this.state.startYear;
-    newSearch.endYear = this.state.endYear;
-
-    // Call setSearch prop (leads to parent function)
-    this.props.setSearch(newSearch);
-    console.log(newSearch)
-  },
-
   handleTermChange: function(event){
     this.setState({ term: event.target.value });
   },
@@ -39,12 +25,27 @@ var Search = React.createClass({
   handleEndYrChange: function(event){
     this.setState({ endYear: event.target.value });
   },
+
+  handleSubmit: function(event) {
+    // Prevent default form submission
+    event.preventDefault();
+
+    // Create object to hold search data
+    var searchObject = {};
+    searchObject.term = this.state.term;
+    searchObject.startYear = this.state.startYear;
+    searchObject.endYear = this.state.endYear;
+
+    // Call setSearch prop (leads to parent function)
+    this.props.setTerm(searchObject);
+    console.log(searchObject)
+  },
   
 
   render: function(){
     return(
       
-      <form>
+      <form onSubmit={this.handleSubmit}>
           <div className="form-group text-left">
             <label>Search Term: </label>
             <input type="text" value={this.state.term} className="form-control" onChange={this.handleTermChange} required />
@@ -57,11 +58,10 @@ var Search = React.createClass({
             <label>End Year: </label>
             <input type="text" value={this.state.endYear} className="form-control" onChange={this.handleEndYrChange} required />
           </div>
-          <button onClick={this.handleSubmit}>
+          <button>
             Search
           </button>
-      </form>
-                
+      </form>        
     )
   }
 });

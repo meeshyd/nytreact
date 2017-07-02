@@ -25,20 +25,25 @@ var Main = React.createClass({
 
   saveArticle: function(title, date, url){
     helpers.postArticle(title, date, url);
-    this.getArticle();
+    this.getArticle()
+    .then(helpers.getArticle()
+
+    .then(function(articles){
+      this.setState({ saved: articles.data })
+    }.bind(this)));
   },
 
   deleteArticle: function(article){
-    console.log(article);
-    axios.delete('/api/saved/' + article._id)
-      .then(function(article){
-        this.setState({
-          savedArticles: article.data
-        });
-        return response;
-      }.bind(this));
 
-    this.getArticle();
+    helpers.deleteArticle(articleId)
+
+    .then(helpers.getSavedArticles()
+
+    .then(function(articles){
+      this.setState({ saved: articles.data })
+    }.bind(this)));
+
+   
   },
 
   getArticle: function(){
@@ -46,7 +51,7 @@ var Main = React.createClass({
       .then(function(articles){
         this.setState({
           savedArticles: articles.data
-        });
+        })
       }.bind(this));
   },
 
@@ -55,15 +60,10 @@ var Main = React.createClass({
 
     if(this.state.runSearch === true){
 
-      helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear)
-        .then(function(articles){
-          console.log(data);
-          if (data != this.state.results)
-          {
-            this.setState({ 
-              results: data })
-          }
-        }.bind(this))
+      helpers.runQuery(this.state.searchCriteria).then(function(articles){
+        this.setState({ articles: articles, runSearch: false });
+      }.bind(this));
+      console.log("componentdidmount ", this.state.searchCriteria)
     }
   },
 
@@ -76,12 +76,10 @@ var Main = React.createClass({
       }.bind(this));
   },
 
-  setTerm: function(term, startYear, endYear){
-    this.setState({
-      term: term,
-      startYear: startYear,
-      endYear: endYear
-    })
+  setTerm: function(results){
+    this.setState({ searchCriteria: results });
+    this.setState({ runSearch: true });
+    console.log("set term ", results)
   },
 
   render: function() {

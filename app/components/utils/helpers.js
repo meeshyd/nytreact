@@ -1,49 +1,41 @@
-// Include the axios package for performing HTTP requests (promise based alternative to request)
-var axios = require('axios');
+var axios = require("axios");
+var APIKey = '39869921ec514004b10b70efa84c6fca';
 
-// New York Times API
-var nytAPI = "39869921ec514004b10b70efa84c6fca";
+// Exporting an object with methods for retrieving and posting data to our API
 
-// Helper Functions
-var helpers = {
+  var helpers = {
 
-  runQuery: function(term, startYear, endYear){
+    runQuery: function(params) {
+      var term = params.term;
+      var startYear = params.startYear;
+      var endYear = params.endYear;
+      var APIKey = '39869921ec514004b10b70efa84c6fca';
 
-    //Figure out the geolocation
-    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + nytAPI + "&q=" + term + "&begin_date=" + startYear + "0101&end_date=" + endYear + "1231";
-
-    return axios.get(queryURL).then(function(response){
-
-      var allArticles = response.response.docs;
-      var newArticles = [];
-      var counter = 0;
-      console.log(allArticles)
-      //Gets first 5 articles that have all 3 components
-      for(var i = 0; i < allArticles.length; i++){
-
-        if(counter > 4) {
-          return newArticles;
+      var queryURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKey + '&q=' + term + '&begin_date=' + startYear + '0101' + '&end_date=' + endYear + '1231';
+      console.log("runquery url ", queryURL)
+      return axios.get(queryURL).then(function(articles){
+        console.log("runquery articles ", articles.data.response.docs)
+        if(articles.data.response.docs[0]){
+          
+          return (articles.data.response.docs);
         }
 
-        if(allArticles[counter].headline.main && allArticles[counter].pub_date && allArticles[counter].web_url) {
-          newArticles.push(allArticles[counter]);
-          counter++;
-        }
-      }
-      console.log(newArticles)
-      return newArticles;
-    })
-  },
+        return [];
+      });
+    },
 
-  // This function posts saved articles to our database.
-  postArticle: function(title, date, url){
+    saveArticle: function(article) {
+        return axios.post("/api/saved", {article})
+    },
 
-    axios.post('/api/saved', {title: title, date: date, url: url})
-    .then(function(results){
-      return(results);
-    })
-  }
-}
+    getSaved: function() {
+        return axios.get("/api/saved")
+    },
+
+    deleteArticle: function(article) {
+        return axios.delete("/api/saved/" + article._id)
+    }
+  };
 
 
 // We export the helpers function (which contains getGithubInfo)
