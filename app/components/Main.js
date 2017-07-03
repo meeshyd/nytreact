@@ -19,25 +19,26 @@ var Main = React.createClass({
       startYear: "",
       endYear: "",
       results: [],
-      savedArticles: []
+      saved: []
     }
   },  
 
   saveArticle: function(title, date, url){
-    helpers.postArticle(title, date, url);
-    this.getArticle()
-    .then(helpers.getArticle()
-
-    .then(function(articles){
-      this.setState({ saved: articles.data })
-    }.bind(this)));
+    helpers.saveArticle(title, date, url)
+    .then(function(res){
+      this.setState({ 
+        title: title,
+        url: url,
+        date: date
+      })
+    }.bind(this));
   },
 
   deleteArticle: function(article){
 
-    helpers.deleteArticle(articleId)
+    helpers.deleteArticle(article)
 
-    .then(helpers.getSavedArticles()
+    .then(helpers.getSaved()
 
     .then(function(articles){
       this.setState({ saved: articles.data })
@@ -46,13 +47,14 @@ var Main = React.createClass({
    
   },
 
-  getArticle: function(){
-    axios.get('/api/saved')
-      .then(function(articles){
-        this.setState({
-          savedArticles: articles.data
-        })
-      }.bind(this));
+  getSaved: function(){
+    helpers.getSaved(title, date, url).then(function(response) {
+      this.setState({
+        title: title,
+        date: date,
+        url: url
+      });
+    }.bind(this));
   },
 
   // If the component updates we'll run this code
@@ -75,7 +77,7 @@ var Main = React.createClass({
     axios.get('/api/saved')
       .then(function(articles){
         this.setState({
-          savedArticles: articles.data
+          saved: articles.data
         });
       }.bind(this));
   },
@@ -101,6 +103,7 @@ var Main = React.createClass({
   },
 
   render: function() {
+
     return (
       <div className='container'>
         <div className="jumbotron">
@@ -130,7 +133,7 @@ var Main = React.createClass({
                   <h3 className="panel-title text-center">Search Results</h3>
                 </div>
                 <div className= "panel-body text-center">
-                  <Results results={this.state.results} />
+                  <Results results={this.state.results} saveArticle={this.saveArticle} />
                 </div>
               </div>
             </div>
@@ -145,7 +148,7 @@ var Main = React.createClass({
                   <h3 className="panel-title text-center">Saved Articles</h3>
                 </div>
                 <div className= "panel-body text-center">
-                  <Saved saved={this.state.savedArticles} deleteArticle={this.deleteArticle}/>
+                  <Saved saved={this.state.saved} deleteArticle={this.deleteArticle}/>
                 </div>
               </div>
             </div>

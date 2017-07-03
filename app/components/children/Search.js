@@ -58,7 +58,7 @@ var Search = React.createClass({
             <label>End Year: </label>
             <input type="text" value={this.state.endYear} className="form-control" onChange={this.handleEndYrChange} required />
           </div>
-          <button>
+          <button className="btn">
             Search
           </button>
       </form>        

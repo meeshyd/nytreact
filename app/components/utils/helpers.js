@@ -14,14 +14,15 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
       console.log("runQuery url ", queryURL)
       var articles =[];
       return axios.get(queryURL).then(function(res){
-        console.log("runQuery articles ", res.data.response.docs)
-        for (var i=0; i < res.data.response.docs.length; i++) {
+        // console.log("runQuery articles ", res.data.response.docs)
+        for (var i=0; i < 5; i++) {
 
           articles.push({
 
             title: res.data.response.docs[i].headline.main,
             url: res.data.response.docs[i].web_url,
             date: res.data.response.docs[i].pub_date,
+            snippet: res.data.response.docs[i].snippet,
             _id: res.data.response.docs[i]._id
           
           });
@@ -31,8 +32,12 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
       });
     },
 
-    saveArticle: function(article) {
-        return axios.post("/api/saved", article)
+    saveArticle: function(title,date,url) {
+      return axios.post('/api/saved', {
+        title: title,
+        date: date,
+        url: url
+      })
     },
 
     getSaved: function() {
