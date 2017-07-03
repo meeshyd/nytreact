@@ -16,7 +16,6 @@ var Saved = React.createClass({
     };
 
     var button = {
-      display: 'block',
       margin: '0 auto 10px auto',
     }
     
@@ -33,13 +32,24 @@ var Saved = React.createClass({
       <div>
         {this.props.saved.map(function(res, i){
           return (
-            <div className='well' key={i}>
-              <a href={res.url} target='_blank'><p>{res.title}</p></a>
-              <button className='btn btn-success btn-warning pull-right'
-                    onClick={this.clickToDelete.bind(null, res._id)}>Delete</button>
-              <p>{res.date}</p>
-          
+            <div key={i} style={border}>
+              <div className="row" style={rowMargin}>
+                <div className="col-md-12">
+                  <h5 className="text-left">
+                    <span className="label label-primary">{parseInt(i)+1}</span>
+                    <a style={titleMargin} href={res.url} target='_blank'>{res.title}</a>
+                  </h5>
+                  <p className="text-left">{res.date}</p>
+                </div>
+              </div>
+              <div className="row" style={rowMargin}>
+                <div className="col-md-12">
+                  <button style={button} className='btn btn-warning pull-right'
+                  onClick={this.clickToDelete.bind(null, res._id)}>Delete</button>
+                </div>
+              </div>
             </div>
+
           )
         }, this)}
       </div>

@@ -21,7 +21,6 @@ var Results = React.createClass({
     };
 
     var button = {
-      display: 'block',
       margin: '0 auto 10px auto',
     }
     
@@ -56,7 +55,7 @@ var Results = React.createClass({
             </div>
             <div className="row" style={rowMargin}>
               <div className="col-md-12">
-                <button style={button} onClick={()=>this.handleClick(i)} type="button" className="btn btn-success">
+                <button style={button} onClick={()=>this.handleClick(i)} type="button" className="pull-right btn btn-success">
                   Save
                 </button>
               </div>
