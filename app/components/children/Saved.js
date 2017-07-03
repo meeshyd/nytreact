@@ -4,7 +4,6 @@ var React = require("react");
 var Saved = React.createClass({
 
   clickToDelete: function(res){
-    console.log('clickToDelete ', res)
     this.props.deleteArticle(res);
   },
 

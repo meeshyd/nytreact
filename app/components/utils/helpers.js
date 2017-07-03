@@ -43,7 +43,7 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
     },
 
     deleteArticle: function(res) {
-      console.log('deleteArticle helper ', res)
+      // console.log('deleteArticle helper ', res)
       return axios.delete("/api/saved/" + res)
     }
   };

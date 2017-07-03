@@ -8,10 +8,10 @@ var mongoose = require('mongoose');
 mongoose.Promise = Promise;
 
 // development DB
-// mongoose.connect("mongodb://localhost/nytreact");
+mongoose.connect("mongodb://localhost/nytreact");
 
 // production DB
-mongoose.connect("mongodb://heroku_wqd6l73q:13a7u2jgil80s0t7pdl6f24p55@ds145292.mlab.com:45292/heroku_wqd6l73q")
+// mongoose.connect("mongodb://heroku_wqd6l73q:13a7u2jgil80s0t7pdl6f24p55@ds145292.mlab.com:45292/heroku_wqd6l73q")
 
 var database = mongoose.connection;
 

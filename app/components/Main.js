@@ -23,15 +23,13 @@ var Main = React.createClass({
 
   saveArticle: function(title, date, url){
     helpers.saveArticle(title, date, url)
-    .then(helpers.getSaved()
     .then(function(res){
-      console.log('saveArticle ', res)
       this.setState({ 
         title: title,
         url: url,
         date: date
       })
-    }.bind(this)));
+    }.bind(this)).then(helpers.getSaved());
   },
 
   deleteArticle: function(id){
@@ -43,16 +41,11 @@ var Main = React.createClass({
   },
 
   componentDidUpdate: function(prevProps, prevState){
-
     if (prevState.searchTerm !== this.state.term) {
-
       let startYear = "";
       let endYear = "";
-
       helpers.runQuery(this.state.term, this.state.startYear, this.state.endYear).then(function(data) {
-
         this.setState({ results: data });
-
       }.bind(this));
     }
   },

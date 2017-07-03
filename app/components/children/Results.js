@@ -36,8 +36,7 @@ var Results = React.createClass({
     var articleResult = this.props.results;
 
     var articleList = articleResult.map(function(article,i){
-      console.log(article)
-      console.log(i)
+
       if (articleResult.length > 2) {
         return (
           <div key={i} style={border}>
@@ -55,7 +54,7 @@ var Results = React.createClass({
             </div>
             <div className="row" style={rowMargin}>
               <div className="col-md-12">
-                <button style={button} onClick={()=>this.handleClick(i)} type="button" className="pull-right btn btn-success">
+                <button style={button} onClick={this.handleClick.bind(null,i)} type="button" className="pull-right btn btn-success">
                   Save
                 </button>
               </div>

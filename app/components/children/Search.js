@@ -33,7 +33,7 @@ var Search = React.createClass({
     searchObject.endYear = this.state.endYear;
 
     this.props.setTerm(searchObject);
-    console.log(searchObject)
+    // console.log(searchObject)
   },
   
 
