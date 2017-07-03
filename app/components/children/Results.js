@@ -9,7 +9,7 @@ var Results = React.createClass({
     var title = this.props.results[i].title;
     var url = this.props.results[i].url;
     var date = this.props.results[i].date
-    console.log("handleClick: ", title, url, date)
+    // console.log("handleClick: ", title, url, date)
     this.props.saveArticle(title, date, url);
   },
 

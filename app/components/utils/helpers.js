@@ -1,8 +1,6 @@
 var axios = require("axios");
 var APIKey = '39869921ec514004b10b70efa84c6fca';
 
-// Exporting an object with methods for retrieving and posting data to our API
-
   var helpers = {
 
     runQuery: function(search) {
@@ -11,7 +9,7 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
       var endYear = search.endYear;
 
       var queryURL = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=' + APIKey + '&q=' + term + '&begin_date=' + startYear + '0101' + '&end_date=' + endYear + '1231';
-      console.log("runQuery url ", queryURL)
+      // console.log("runQuery url ", queryURL)
       var articles =[];
       return axios.get(queryURL).then(function(res){
         // console.log("runQuery articles ", res.data.response.docs)
@@ -33,7 +31,7 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
     },
 
     saveArticle: function(title,date,url) {
-      return axios.post('/api/saved', {
+      return axios.post('/api/saved/', {
         title: title,
         date: date,
         url: url
@@ -41,11 +39,12 @@ var APIKey = '39869921ec514004b10b70efa84c6fca';
     },
 
     getSaved: function() {
-        return axios.get("/api/saved")
+        return axios.get("/api/saved/")
     },
 
-    deleteArticle: function(article) {
-        return axios.delete("/api/saved/" + article._id)
+    deleteArticle: function(res) {
+      console.log('deleteArticle helper ', res)
+      return axios.delete("/api/saved/" + res)
     }
   };
 

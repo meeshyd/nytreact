@@ -1,10 +1,10 @@
 // Include React
 var React = require("react");
 
-// This is the History component. It will be used to show a log of  recent searches.
 var Saved = React.createClass({
 
   clickToDelete: function(res){
+    console.log('clickToDelete ', res)
     this.props.deleteArticle(res);
   },
 
@@ -45,7 +45,7 @@ var Saved = React.createClass({
               <div className="row" style={rowMargin}>
                 <div className="col-md-12">
                   <button style={button} className='btn btn-warning pull-right'
-                  onClick={this.clickToDelete.bind(null, res._id)}>Delete</button>
+                  onClick={this.clickToDelete.bind(null,res._id)}>Delete</button>
                 </div>
               </div>
             </div>

@@ -2,12 +2,10 @@
 var React = require("react");
 var axios = require("axios");
 
-// Here we include all of the sub-components
 var Search = require("./children/Search");
 var Results = require("./children/Results");
 var Saved = require("./children/Saved");
 
-// Helper for making AJAX requests to our API
 var helpers = require("./utils/helpers");
 
 // Creating the Main component
@@ -25,39 +23,25 @@ var Main = React.createClass({
 
   saveArticle: function(title, date, url){
     helpers.saveArticle(title, date, url)
+    .then(helpers.getSaved()
     .then(function(res){
+      console.log('saveArticle ', res)
       this.setState({ 
         title: title,
         url: url,
         date: date
       })
-    }.bind(this));
-  },
-
-  deleteArticle: function(article){
-
-    helpers.deleteArticle(article)
-
-    .then(helpers.getSaved()
-
-    .then(function(articles){
-      this.setState({ saved: articles.data })
     }.bind(this)));
-
-   
   },
 
-  getSaved: function(){
-    helpers.getSaved(title, date, url).then(function(response) {
-      this.setState({
-        title: title,
-        date: date,
-        url: url
-      });
-    }.bind(this));
+  deleteArticle: function(id){
+    helpers.deleteArticle(id)
+    .then(helpers.getSaved()
+    .then(function(res){
+      this.setState({ saved: res.data });
+    }.bind(this)));
   },
 
-  // If the component updates we'll run this code
   componentDidUpdate: function(prevProps, prevState){
 
     if (prevState.searchTerm !== this.state.term) {
@@ -74,33 +58,25 @@ var Main = React.createClass({
   },
 
   componentDidMount: function(){
-    axios.get('/api/saved')
-      .then(function(articles){
+    helpers.getSaved().then(function(articles){
         this.setState({
           saved: articles.data
         });
       }.bind(this));
   },
 
-  // setTerm: function(results){
-  //   this.setState({ searchCriteria: results });
-  //   this.setState({ runSearch: true });
-  //   console.log("set term ", results)
-  // },
-
   setTerm: function(term) {
     this.setState({ term: term });
   },
 
-  // Function to set search start date
   setStartYr: function(startYear) {
     this.setState({ startYear: startYear });
   },
 
-  // Function to set search end date
   setEndYr: function(endYear) {
     this.setState({ endYear: endYear });
   },
+
 
   render: function() {
 

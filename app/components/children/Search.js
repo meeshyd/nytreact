@@ -2,7 +2,6 @@
 var React = require("react");
 var helpers = require("../utils/helpers");
 
-// Creating the Form component
 var Search = React.createClass({
 
   getInitialState: function(){
@@ -10,7 +9,6 @@ var Search = React.createClass({
       'term': "",
       'startYear': "",
       'endYear': ""
-      // 'articles':[]
     }
   },
 
@@ -27,16 +25,13 @@ var Search = React.createClass({
   },
 
   handleSubmit: function(event) {
-    // Prevent default form submission
-    event.preventDefault();
 
-    // Create object to hold search data
+    event.preventDefault();
     var searchObject = {};
     searchObject.term = this.state.term;
     searchObject.startYear = this.state.startYear;
     searchObject.endYear = this.state.endYear;
 
-    // Call setSearch prop (leads to parent function)
     this.props.setTerm(searchObject);
     console.log(searchObject)
   },
